@@ -20,13 +20,13 @@ O sistema utiliza o MySQL (produção) e o H2 Database (testes locais).
 1. Crie um banco de dados no MySQL:
 
 ```sql
-CREATE DATABASE produtos_db;
+CREATE DATABASE produtosdb;
 ```
 
 2. Configure o arquivo `application.properties`:
 ```properties
 # Configuração do MySQL
-spring.datasource.url=jdbc:mysql://localhost:3306/produtos_db
+spring.datasource.url=jdbc:mysql://localhost:3306/produtosdb
 spring.datasource.username=s[INSIRA SEU USUÁRIO]
 spring.datasource.password=[INSIRA SUA SENHA]
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
