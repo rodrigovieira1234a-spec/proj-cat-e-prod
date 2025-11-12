@@ -10,8 +10,8 @@ O sistema foi projetado com **autenticação HTTP Basic** e **autorização base
 
 ## Integrantes
 
-- [Gabriel Carlos Rezende Nazario(https://github.com/anasouza)
-- [João Marcos Da Silva Braz(https://github.com/jmbraz)
+- [Gabriel Carlos Rezende Nazario](https://github.com/anasouza)
+- [João Marcos Da Silva Braz](https://github.com/jmbraz)
 - [Luana Alexandre da Silva](https://github.com/rodrigovieira1234a-spec)
 - [Rodrigo Vieira Fagundes](https://github.com/rodrigovieira1234a-spec)
 
