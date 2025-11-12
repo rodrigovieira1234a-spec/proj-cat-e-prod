@@ -1,103 +1,304 @@
-🛍️ Sistema de Cadastro de Produtos - Spring Boot
-📋 Descrição
+# Projeto Sistema de Cadastro de Produtos
 
-Projeto desenvolvido em Java com Spring Boot para gerenciar o cadastro de produtos.
-Permite criar, listar, atualizar e excluir produtos, além de cadastrar usuários
-O sistema utiliza o MySQL (produção) e o H2 Database (testes locais).
+## Descrição Geral
 
-🧰 Funcionalidades
+O **Sistema de Cadastro de Produtos** é uma aplicação desenvolvida em **Java com Spring Boot e MySQL**. Seu objetivo é gerenciar **categorias de produtos**, **produtos** e **usuários com controle de acesso**, permitindo o cadastro, listagem, atualização e exclusão de registros.
 
-✅ Cadastrar produtos
-🔍 Listar todos os produtos
-✏️ Atualizar produtos
-❌ Deletar produtos
-🧱 Integração com MySQL ou H2
+O sistema foi projetado com **autenticação HTTP Basic** e **autorização baseada em perfis** (COMUM e ADMIN), garantindo segurança e controle de acesso às operações.
 
-## ⚙️ Configuração
+---
 
-#### MySQL (Produção)
+## Integrantes
 
-1. Crie um banco de dados no MySQL:
+- [Gabriel Carlos Rezende Nazario(https://github.com/anasouza)
+- [João Marcos Da Silva Braz(https://github.com/jmbraz)
+- [Luana Alexandre da Silva](https://github.com/rodrigovieira1234a-spec)
+- [Rodrigo Vieira Fagundes](https://github.com/rodrigovieira1234a-spec)
 
-```sql
-CREATE DATABASE produtosdb;
+
+## Dependências do Projeto
+
+```xml
+<dependencies>
+    <!-- Spring Boot -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    
+    <!-- Spring Data JPA -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    
+    <!-- Spring Security -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    
+    <!-- MySQL Connector -->
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    
+    <!-- H2 Database (para testes) -->
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    
+    <!-- DevTools -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    
+    <!-- Lombok (opcional) -->
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+    
+    <!-- Spring Boot Test -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
 ```
 
-2. Configure o arquivo `application.properties`:
-```properties
-# Configuração do MySQL
-spring.datasource.url=jdbc:mysql://localhost:3306/produtosdb
-spring.datasource.username=s[INSIRA SEU USUÁRIO]
-spring.datasource.password=[INSIRA SUA SENHA]
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+---
+
+## Arquitetura do Sistema (Completa)
+
+```
+com.cadastro.produtos/
+│
+├── configs/
+│   ├── SecurityConfigurations.java  → Configuração de segurança (autenticação/autorização)
+│   └── AuthService.java             → Serviço de autenticação (carrega usuário)
+│
+├── controller/                      → Camada de apresentação (API REST)
+│   ├── ProdutoController.java       → Endpoints de produtos
+│   ├── CategoriaController.java     → Endpoints de categorias
+│   └── UsuarioController.java       → Endpoints de usuários
+│
+├── entity/                          → Camada de modelo (entidades do banco)
+│   ├── Produto.java                 → Entidade Produto
+│   ├── Categoria.java               → Entidade Categoria
+│   ├── Usuario.java                 → Entidade Usuario (implementa UserDetails)
+│   └── Perfil.java                  → Entidade Perfil (implementa GrantedAuthority)
+│
+├── repository/                      → Camada de persistência (acesso ao banco)
+│   ├── ProdutoRepository.java       → Interface JPA para Produto
+│   ├── CategoriaRepository.java     → Interface JPA para Categoria
+│   ├── UsuarioRepository.java       → Interface JPA para Usuario
+│   └── PerfilRepository.java        → Interface JPA para Perfil
+│
+├── service/                         → Camada de negócio (lógica da aplicação)
+│   ├── ProdutoService.java          → Regras de negócio para Produto
+│   ├── CategoriaService.java        → Regras de negócio para Categoria
+│   └── UsuarioService.java          → Regras de negócio para Usuario
+│
+├── exception/                       → Camada de tratamento de exceções
+│   ├── ResourceNotFoundException.java    → Exceção para recurso não encontrado
+│   ├── ValidationException.java          → Exceção para validações
+│   └── GlobalExceptionHandler.java       → Tratamento global de exceções
+│
+└── Cadastroprodutos5Application.java     → Classe principal do Spring Boot
 ```
 
-## ✅ Endpoints da API
+---
 
-### 👤 Usuários (`/usuarios`)
+## Principais Funcionalidades
 
-| Método | Endpoint | Ação | Acesso | Descrição |
-|--------|----------|------|--------|-----------|
-| GET | `/usuarios` | Listar todos os usuários | ADMIN | Retorna lista completa de usuários |
-| GET | `/usuarios/{id}` | Buscar usuário por ID | ADMIN | Busca usuário específico |
-| GET | `/usuarios/me` | Buscar perfil do usuário logado | ADMIN/COMUM | Retorna dados do usuário autenticado |
-| POST | `/usuarios` | Criar novo usuário | ADMIN | Cadastra novo usuário (senha é criptografada) |
-| PUT | `/usuarios/{id}` | Atualizar usuário | ADMIN | Atualiza dados do usuário |
-| DELETE | `/usuarios/{id}` | Excluir usuário | ADMIN | Remove usuário do sistema |
+### Categoria
+- Cadastrar nova categoria **(Requer ADMIN)**
+- Listar todas as categorias **(COMUM e ADMIN)**
+- Buscar categoria por ID **(COMUM e ADMIN)**
+- Atualizar categoria existente **(Requer ADMIN)**
+- Excluir categoria **(Requer ADMIN)**
 
-#### Estrutura do Usuário
+### Produto
+- Cadastrar novo produto (associando a uma categoria existente) **(Requer ADMIN)**
+- Listar todos os produtos **(COMUM e ADMIN)**
+- Buscar produto por ID **(COMUM e ADMIN)**
+- Atualizar produto existente **(Requer ADMIN)**
+- Excluir produto **(Requer ADMIN)**
 
-```json
+### Usuário
+- Cadastrar novo usuário com senha criptografada **(Requer ADMIN)**
+- Listar todos os usuários **(Requer ADMIN)**
+- Buscar usuário por ID **(Requer ADMIN)**
+- Buscar dados do próprio usuário **(COMUM e ADMIN)**
+- Atualizar usuário existente **(Requer ADMIN)**
+- Excluir usuário **(Requer ADMIN)**
+
+---
+
+## Rotas Principais (Endpoints)
+
+### Categoria (`/categorias`)
+
+| Método | Endpoint | Descrição | Permissão |
+|--------|----------|-----------|-----------|
+| GET | `/categorias` | Lista todas as categorias | COMUM, ADMIN |
+| GET | `/categorias/{id}` | Retorna uma categoria específica | COMUM, ADMIN |
+| POST | `/categorias` | Cadastra uma nova categoria | ADMIN |
+| PUT | `/categorias/{id}` | Atualiza uma categoria existente | ADMIN |
+| DELETE | `/categorias/{id}` | Exclui uma categoria | ADMIN |
+
+---
+
+### Produto (`/produtos`)
+
+| Método | Endpoint | Descrição | Permissão |
+|--------|----------|-----------|-----------|
+| GET | `/produtos` | Lista todos os produtos | COMUM, ADMIN |
+| GET | `/produtos/{id}` | Retorna um produto específico | COMUM, ADMIN |
+| POST | `/produtos` | Cadastra um novo produto | ADMIN |
+| PUT | `/produtos/{id}` | Atualiza um produto existente | ADMIN |
+| DELETE | `/produtos/{id}` | Exclui um produto | ADMIN |
+
+---
+
+### Usuário (`/usuarios`)
+
+| Método | Endpoint | Descrição | Permissão |
+|--------|----------|-----------|-----------|
+| GET | `/usuarios/me` | Retorna dados do próprio usuário | COMUM, ADMIN |
+| GET | `/usuarios` | Lista todos os usuários | ADMIN |
+| GET | `/usuarios/{id}` | Retorna um usuário específico | ADMIN |
+| POST | `/usuarios` | Cadastra um novo usuário | ADMIN |
+| PUT | `/usuarios/{id}` | Atualiza um usuário existente | ADMIN |
+| DELETE | `/usuarios/{id}` | Exclui um usuário | ADMIN |
+
+---
+
+## Estrutura das Tabelas
+
+### Tabela: `usuario`
+
+| Campo | Tipo | Chave | Descrição |
+|-------|------|-------|-----------|
+| id | INTEGER | PK | Identificador único do usuário |
+| nome | VARCHAR(255) | - | Nome completo do usuário |
+| email | VARCHAR(255) | UNIQUE | Email do usuário (usado como username) |
+| senha | VARCHAR(255) | - | Senha criptografada (BCrypt) |
+
+---
+
+### Tabela: `perfil`
+
+| Campo | Tipo | Chave | Descrição |
+|-------|------|-------|-----------|
+| id | INTEGER | PK | Identificador único do perfil |
+| nome | VARCHAR(50) | - | Nome do perfil (COMUM ou ADMIN) |
+
+---
+
+### Tabela: `usuario_perfil` (Tabela de Junção)
+
+| Campo | Tipo | Chave | Descrição |
+|-------|------|-------|-----------|
+| usuario_id | INTEGER | FK, PK | Referencia usuario.id |
+| perfil_id | INTEGER | FK, PK | Referencia perfil.id |
+
+**PK Composta:** (usuario_id, perfil_id)
+
+---
+
+### Tabela: `categorias`
+
+| Campo | Tipo | Chave | Descrição |
+|-------|------|-------|-----------|
+| id | BIGINT | PK | Identificador único da categoria |
+| nome | VARCHAR(255) | - | Nome da categoria (ex: Eletrônicos, Roupas) |
+
+---
+
+### Tabela: `produtos`
+
+| Campo | Tipo | Chave | Descrição |
+|-------|------|-------|-----------|
+| id | BIGINT | PK | Identificador único do produto |
+| nome | VARCHAR(255) | - | Nome do produto (ex: Celular, Camisa) |
+| preco | DECIMAL(10,2) | - | Preço do produto |
+| categoria_id | BIGINT | FK | Referencia categorias.id |
+
+
+## Testes de API
+
+### Ferramentas Recomendadas:
+- **Insomnia**
+- **Postman**
+- **cURL** (linha de comando)
+- **Thunder Client** (VS Code)
+
+### Autenticação HTTP Basic
+
+Todas as requisições requerem autenticação. No header:
+
+```
+Authorization: Basic base64(email:senha)
+```
+
+---
+
+### Exemplo 1: Criar Categoria (ADMIN)
+
+**Requisição:**
+```http
+POST http://localhost:8080/categorias
+Authorization: Basic YWRtaW5AZW1haWwuY29tOnNlbmhhMTIz
+Content-Type: application/json
+
 {
-  "id": 1,
-  "nome": "João Silva",
-  "email": "joao@email.com",
-  "senha": "senha123",
-  "perfil": [
-    {
-      "id": 1,
-      "nome": "ADMIN"
-    }
-  ]
+  "nome": "Eletrônicos"
 }
 ```
 
-#### Exemplo: Criar Usuário
-
-**POST** `/usuarios`
-
-```json
-{
-  "nome": "Maria Santos",
-  "email": "maria@email.com",
-  "senha": "senha123",
-  "perfil": [
-    {
-      "id": 2,
-      "nome": "COMUM"
-    }
-  ]
-}
-```
-
-**Observação:** A senha é automaticamente criptografada com BCrypt antes de ser salva.
-
-### 📦 Produtos (`/produtos`)
-
-| Método | Endpoint | Ação | Acesso | Descrição |
-|--------|----------|------|--------|-----------|
-| GET | `/produtos` | Listar todos produtos | ADMIN/COMUM | Lista todos os produtos com suas categorias |
-| GET | `/produtos/{id}` | Buscar produto por ID | ADMIN/COMUM | Busca produto específico |
-| POST | `/produtos` | Criar produto | ADMIN | Cadastra novo produto |
-| PUT | `/produtos/{id}` | Atualizar produto | ADMIN | Atualiza dados do produto |
-| DELETE | `/produtos/{id}` | Excluir produto | ADMIN | Remove produto do sistema |
-
-#### Estrutura do Produto
-
+**Resposta (201 Created):**
 ```json
 {
   "id": 1,
-  "nome": "Notebook Dell Inspiron",
+  "nome": "Eletrônicos",
+  "produtos": []
+}
+```
+
+---
+
+### Exemplo 2: Criar Produto (ADMIN)
+
+**Requisição:**
+```http
+POST http://localhost:8080/produtos
+Authorization: Basic YWRtaW5AZW1haWwuY29tOnNlbmhhMTIz
+Content-Type: application/json
+
+{
+  "nome": "Notebook Dell",
+  "preco": 3500.00,
+  "categoria": {
+    "id": 1
+  }
+}
+```
+
+**Resposta (201 Created):**
+```json
+{
+  "id": 1,
+  "nome": "Notebook Dell",
   "preco": 3500.00,
   "categoria": {
     "id": 1,
@@ -106,159 +307,180 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 }
 ```
 
-#### Exemplo: Criar Produto
+---
 
-**POST** `/produtos`
+### Exemplo 3: Listar Produtos (COMUM ou ADMIN)
 
-```json
-{
-  "nome": "Mouse Logitech MX Master",
-  "preco": 450.00,
-  "categoria": {
-    "id": 1
-  }
-}
+**Requisição:**
+```http
+GET http://localhost:8080/produtos
+Authorization: Basic dXN1YXJpb0BlbWFpbC5jb206c2VuaGExMjM=
 ```
 
-#### Exemplo: Atualizar Produto
-
-**PUT** `/produtos/1`
-
+**Resposta (200 OK):**
 ```json
-{
-  "nome": "Notebook Dell Inspiron 15",
-  "preco": 3200.00,
-  "categoria": {
-    "id": 1
-  }
-}
-```
-
-### 🏷️ Categorias (`/categorias`)
-
-| Método | Endpoint | Ação | Acesso | Descrição |
-|--------|----------|------|--------|-----------|
-| GET | `/categorias` | Listar categorias | ADMIN/COMUM | Lista todas as categorias com produtos |
-| GET | `/categorias/{id}` | Buscar categoria por ID | ADMIN/COMUM | Busca categoria específica |
-| POST | `/categorias` | Criar categoria | ADMIN | Cadastra nova categoria |
-| PUT | `/categorias/{id}` | Atualizar categoria | ADMIN | Atualiza dados da categoria |
-| DELETE | `/categorias/{id}` | Excluir categoria | ADMIN | Remove categoria (apenas se não tiver produtos) |
-
-#### Estrutura da Categoria
-
-```json
-{
-  "id": 1,
-  "nome": "Eletrônicos",
-  "produtos": [
-    {
+[
+  {
+    "id": 1,
+    "nome": "Notebook Dell",
+    "preco": 3500.00,
+    "categoria": {
       "id": 1,
-      "nome": "Notebook Dell",
-      "preco": 3500.00
+      "nome": "Eletrônicos"
     }
-  ]
-}
-```
-
-#### Exemplo: Criar Categoria
-
-**POST** `/categorias`
-
-```json
-{
-  "nome": "Livros"
-}
-```
-
-#### Exemplo: Atualizar Categoria
-
-**PUT** `/categorias/1`
-
-```json
-{
-  "nome": "Eletrônicos e Tecnologia"
-}
-```
-
-## 🧪 Testando a API
-
-### 1. Configuração no Postman/Insomnia
-
-#### Criando um Usuário ADMIN (primeiro acesso)
-
-Como não há usuários no sistema inicialmente, você precisará criar manualmente no banco:
-
-```sql
--- Senha criptografada para "admin123"
-INSERT INTO usuario (nome, email, senha) 
-VALUES ('Administrador', 'admin@email.com', '$2a$10$XptfskLsT.yRbRq2NvcVV.n8ZzN.lBxJhkMjJqzM8kqvLaJYhrPmC');
-
--- Associar perfil ADMIN ao usuário
-INSERT INTO usuario_perfil (usuario_id, perfil_id) 
-VALUES (1, 1);
-```
-
-#### Autenticando no Postman/Insomnia
-
-1. Selecione o tipo de autenticação: **Basic Auth**
-2. Username: `admin@email.com`
-3. Password: `admin123`
-
-### 2. Fluxo de Testes Completo
-
-#### Passo 1: Criar Categorias
-
-**POST** `/categorias`
-
-```json
-{
-  "nome": "Eletrônicos"
-}
-```
-
-#### Passo 2: Criar Produtos
-
-**POST** `/produtos`
-
-```json
-{
-  "nome": "Smartphone Samsung Galaxy",
-  "preco": 2500.00,
-  "categoria": {
-    "id": 1
+  },
+  {
+    "id": 2,
+    "nome": "Mouse Logitech",
+    "preco": 150.00,
+    "categoria": {
+      "id": 1,
+      "nome": "Eletrônicos"
+    }
   }
-}
+]
 ```
 
-#### Passo 3: Listar Produtos
+---
 
-**GET** `/produtos`
+### Exemplo 4: Criar Usuário (ADMIN)
 
-#### Passo 4: Criar Usuário COMUM
+**Requisição:**
+```http
+POST http://localhost:8080/usuarios
+Authorization: Basic YWRtaW5AZW1haWwuY29tOnNlbmhhMTIz
+Content-Type: application/json
 
-**POST** `/usuarios`
-
-```json
 {
   "nome": "João Silva",
   "email": "joao@email.com",
   "senha": "senha123",
   "perfil": [
+    {"id": 1}
+  ]
+}
+```
+
+**Resposta (201 Created):**
+```json
+{
+  "id": 1,
+  "nome": "João Silva",
+  "email": "joao@email.com",
+  "perfil": [
     {
-      "id": 2,
+      "id": 1,
       "nome": "COMUM"
     }
   ]
 }
 ```
-#### Passo 5: Testar Acesso com Usuário COMUM
 
-Mude a autenticação para:
-- Username: `joao@email.com`
-- Password: `senha123`
+**Nota:** A senha é automaticamente criptografada com BCrypt pelo `UsuarioService`.
 
-Tente:
-- ✅ **GET** `/produtos` - Deve funcionar
-- ✅ **GET** `/usuarios/me` - Deve retornar dados do João
-- ❌ **POST** `/produtos` - Deve retornar 403 Forbidden
-- ❌ **GET** `/usuarios` - Deve retornar 403 Forbidden
+---
+
+### Exemplo 5: Buscar Próprio Perfil
+
+**Requisição:**
+```http
+GET http://localhost:8080/usuarios/me
+Authorization: Basic am9hb0BlbWFpbC5jb206c2VuaGExMjM=
+```
+
+**Resposta (200 OK):**
+```json
+{
+  "id": 1,
+  "nome": "João Silva",
+  "email": "joao@email.com",
+  "perfil": [
+    {
+      "id": 1,
+      "nome": "COMUM"
+    }
+  ]
+}
+```
+
+---
+
+### Exemplo 6: Tentativa de Acesso Negado
+
+**Requisição (usuário COMUM tentando criar produto):**
+```http
+POST http://localhost:8080/produtos
+Authorization: Basic am9hb0BlbWFpbC5jb206c2VuaGExMjM=
+Content-Type: application/json
+
+{
+  "nome": "Teclado",
+  "preco": 200.00,
+  "categoria": {"id": 1}
+}
+```
+
+**Resposta (403 Forbidden):**
+```json
+{
+  "timestamp": "2025-11-11T10:30:00",
+  "status": 403,
+  "error": "Forbidden",
+  "message": "Access Denied"
+}
+```
+
+---
+
+## Configuração e Execução
+
+### application.properties
+
+```properties
+# Configuração do Banco de Dados MySQL
+spring.datasource.url=jdbc:mysql://localhost:3306/cadastro_produtos
+spring.datasource.username=root
+spring.datasource.password=[INSIRA SUA SENHA]
+
+# Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# Porta do servidor
+server.port=8080
+```
+
+---
+
+## Conceitos Aplicados
+
+- **RESTful API** - Arquitetura REST com recursos bem definidos
+- **Spring Security** - Autenticação HTTP Basic e Autorização baseada em roles
+- **BCrypt** - Criptografia de senhas
+- **JPA/Hibernate** - ORM para persistência de dados
+- **Relacionamentos JPA** - OneToMany, ManyToOne, ManyToMany
+- **Arquitetura em Camadas** - Separação de responsabilidades
+- **Exception Handling** - Tratamento centralizado de erros
+- **DTO Pattern** - Transferência de dados via JSON
+- **Repository Pattern** - Abstração do acesso a dados
+- **Service Layer** - Lógica de negócio isolada
+- **UserDetails** - Integração com Spring Security
+- **GrantedAuthority** - Sistema de permissões
+
+---
+
+## Conclusão
+
+Este projeto exemplifica um **CRUD completo e seguro**, com:
+
+- Modelagem simples e eficiente
+- Relacionamentos entre entidades
+- **Sistema de autenticação e autorização robusto**
+- **Controle de acesso granular por perfis**
+- Persistência via Spring Data JPA
+- Estrutura organizada e de fácil manutenção
+- **Segurança com criptografia de senhas**
+- **Separação entre subsistema de autenticação e negócio**
+
+O sistema está pronto para uso e pode ser expandido com novas funcionalidades, validações avançadas, paginação e filtros.
