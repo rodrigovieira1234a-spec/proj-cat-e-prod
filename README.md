@@ -11,6 +11,10 @@ O sistema foi projetado com **autenticação HTTP Basic** e **autorização base
 A documentação completa do sistema está disponível no link abaixo:
 
 [**Documentação do Projeto – Sistema de Cadastro de Produtos (PDF)**](https://github.com/jmbraz/proj-cat-e-prod/blob/main/docs/Documenta%C3%A7%C3%A3o%20do%20Projeto%20%E2%80%93%20Sistema%20de%20Cadastro%20de%20Produtos.pdf)
+[**Apresentação do Projeto – Sistema de Cadastro de Produtos (PDF)**](https://github.com/jmbraz/proj-cat-e-prod/blob/main/docs/Apresenta%C3%A7%C3%A3o%20Cadastro%20de%20Produtos.pdf)
+[**Apresentação do Projeto – Sistema de Cadastro de Produtos (PPTX)**](https://github.com/jmbraz/proj-cat-e-prod/blob/main/docs/Apresenta%C3%A7%C3%A3o%20Cadastro%20de%20Produtos.pptx)
+
+
 
 ---
 
