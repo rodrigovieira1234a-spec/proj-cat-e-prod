@@ -21,6 +21,7 @@ A documentação completa do sistema está disponível nos links abaixo:
 ## Integrantes
 
 - [Gabriel Carlos Rezende Nazario](https://github.com/)
+- [José Eliomax Pereira Mariano](https://github.com/)
 - [João Marcos Da Silva Braz](https://github.com/jmbraz)
 - [Luana Alexandre da Silva](https://github.com/lualexan0)
 - [Rodrigo Vieira Fagundes](https://github.com/rodrigovieira1234a-spec)
