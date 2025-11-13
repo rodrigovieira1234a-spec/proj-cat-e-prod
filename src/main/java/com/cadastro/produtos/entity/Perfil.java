@@ -2,6 +2,8 @@ package com.cadastro.produtos.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +33,7 @@ public class Perfil implements GrantedAuthority{
 	}
 	
 	@Override
+	@JsonIgnore
 	public String getAuthority() {
 		return this.nome;
 	}

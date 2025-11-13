@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,23 +25,25 @@ public class Usuario implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private String nome;
-	
+
 	@Column(nullable = false)
 	private String senha;
 	
-	@Column(unique=true, nullable=false)
+	@Column(unique = true, nullable = false)
 	private String email;
 	
 	@ManyToMany
-	@JoinTable(name="usuario_perfil",
-			joinColumns = @JoinColumn(name="usuario_id"),
-			inverseJoinColumns = @JoinColumn(name="perfil_id"))
+	@JoinTable(
+		name = "usuario_perfil",
+		joinColumns = @JoinColumn(name = "usuario_id"),
+		inverseJoinColumns = @JoinColumn(name = "perfil_id")
+	)
 	private List<Perfil> perfil;
 	
 	public Usuario() {}
-	
+
 	public Usuario(Integer id, String nome, String senha, String email, List<Perfil> perfil) {
 		this.id = id;
 		this.nome = nome;
@@ -51,7 +55,7 @@ public class Usuario implements UserDetails {
 	public Integer getId() {
 		return id;
 	}
-
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -88,36 +92,43 @@ public class Usuario implements UserDetails {
 		this.perfil = perfil;
 	}
 
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.perfil;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getPassword() {
 		return this.senha;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getUsername() {
 		return this.email;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isEnabled() {
 		return true;
