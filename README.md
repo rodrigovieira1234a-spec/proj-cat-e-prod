@@ -14,9 +14,40 @@ A documentação completa do sistema está disponível nos links abaixo:
 - [**Apresentação do Projeto – Sistema de Cadastro de Produtos (PDF)**](https://github.com/jmbraz/proj-cat-e-prod/blob/main/docs/Apresenta%C3%A7%C3%A3o%20Cadastro%20de%20Produtos.pdf)
 - [**Apresentação do Projeto – Sistema de Cadastro de Produtos (PPTX)**](https://github.com/jmbraz/proj-cat-e-prod/blob/main/docs/Apresenta%C3%A7%C3%A3o%20Cadastro%20de%20Produtos.pptx)
 
+## Índice
 
-
----
+1. [Descrição Geral](#descrição-geral)
+2. [Documentação do Projeto](#documentação-do-projeto)
+3. [Integrantes](#integrantes)
+4. [Dependências do Projeto](#dependências-do-projeto)
+5. [Arquitetura do Sistema (Completa)](#arquitetura-do-sistema-completa)
+6. [Principais Funcionalidades](#principais-funcionalidades)
+   - [Categoria](#categoria)
+   - [Produto](#produto)
+   - [Usuário](#usuário)
+7. [Rotas Principais (Endpoints)](#rotas-principais-endpoints)
+   - [Categoria (`/categorias`)](#categoria-categorias)
+   - [Produto (`/produtos`)](#produto-produtos)
+   - [Usuário (`/usuarios`)](#usuário-usuarios)
+8. [Estrutura das Tabelas](#estrutura-das-tabelas)
+   - [Tabela `usuario`](#tabela-usuario)
+   - [Tabela `perfil`](#tabela-perfil)
+   - [Tabela `usuario_perfil`](#tabela-usuario_perfil)
+   - [Tabela `categorias`](#tabela-categorias)
+   - [Tabela `produtos`](#tabela-produtos)
+9. [Testes de API](#testes-de-api)
+   - [Ferramentas Recomendadas](#ferramentas-recomendadas)
+   - [Autenticação HTTP Basic](#autenticação-http-basic)
+   - [Exemplo 1: Criar Categoria (ADMIN)](#exemplo-1-criar-categoria-admin)
+   - [Exemplo 2: Criar Produto (ADMIN)](#exemplo-2-criar-produto-admin)
+   - [Exemplo 3: Listar Produtos (COMUM-ou-admin)](#exemplo-3-listar-produtos-comum-ou-admin)
+   - [Exemplo 4: Criar Usuário (ADMIN)](#exemplo-4-criar-usuário-admin)
+   - [Exemplo 5: Buscar Próprio Perfil](#exemplo-5-buscar-próprio-perfil)
+   - [Exemplo 6: Tentativa de Acesso Negado](#exemplo-6-tentativa-de-acesso-negado)
+10. [Configuração e Execução](#configuração-e-execução)
+    - [Arquivo `application.properties`](#arquivo-applicationproperties)
+11. [Conceitos Aplicados](#conceitos-aplicados)
+12. [Conclusão](#conclusão)
 
 ## Integrantes
 
